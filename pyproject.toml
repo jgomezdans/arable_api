@@ -1,27 +1,18 @@
-[tool.pdm]
-
 [tool.black]
 line-length =72 
 
 [project]
 name = "arable_api"
-version = "0.1.00"
-description = "Simple package for dealing with the Arable API"
+version = "0.1.0"
+description = "Arable API"
 authors = [
     {name = "Jose Gomez-Dans", email = "jose.gomez-dans@kcl.ac.uk"},
 ]
-scripts = {arable_grab = "arable_api.__main__:main"}
-dependencies = [
-    "requests",
-    "pandas",
-    "numpy"
-]
-requires-python = ">=3.9"
+dependencies = []
+requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
 
 [build-system]
-requires = ["pdm-pep517>=1.0.0"]
+requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
-
-
