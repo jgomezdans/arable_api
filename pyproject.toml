@@ -2,7 +2,7 @@
 
 [tool.black]
 line-length =72 
-q
+
 [project]
 name = "arable_api"
 version = "0.1.00"
