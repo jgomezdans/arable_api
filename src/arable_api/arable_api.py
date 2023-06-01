@@ -81,7 +81,7 @@ def get_response(
         try:
             api_key = os.environ["ARABLE_API"]
         except KeyError:
-            print(
+            raise KeyError(
                 "You did not provide an API key, "
                 "and one isn't defined in the environment"
             )
