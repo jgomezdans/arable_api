@@ -6,10 +6,6 @@ import datetime as dt
 import os
 from pathlib import Path
 import pandas as pd
-import numpy as np
-from pprint import pprint
-import matplotlib.pyplot as plt
-import sys
 
 # Remove the default handler from the root logger
 logging.getLogger().handlers = []
@@ -98,9 +94,7 @@ def get_response(
             + f"URL: {url}\n"
         )
         logger.error(msg)
-        raise requests.HTTPError(
-            "Problem accessing API endpoint\n" + msg
-        )
+        raise requests.HTTPError("Problem accessing API endpoint\n" + msg)
     return json.loads(r.content)
 
 
@@ -108,8 +102,7 @@ def get_datasets() -> dict:
     """Queries API for available measurements"""
     meas = get_response("schemas/calibrated")
     ddatasets = pd.DataFrame(meas)
-    datasets = dict(zip(ddatasets.column_name, ddatasets.description))
-    return ddatasets
+    return dict(zip(ddatasets.column_name, ddatasets.description))
 
 
 def get_devices() -> list:
@@ -125,18 +118,20 @@ def get_data(
     """Get data from the Arable API
 
     Args:
-        schema (str, optional): Select a schema. Defaults to "data/local_hourly".
-        devices (None | list | str, optional): Device or devices to gather data from.
-             Defaults to `None`. If `None`, it will query all the devices and download data
-             from all of them
-        start_time (None | str | dt.datetime, optional): Start time. Defaults to None.
-            If `None`, it will assume today.
-        end_time (None | str | dt.datetime, optional): End time. Defaults to `None`.
-            Same comment as `start_time`
+        schema (str, optional): Select a schema. Defaults to
+                "data/local_hourly".
+        devices (None | list | str, optional): Device or devices to gather
+                data from.
+             Defaults to `None`. If `None`, it will query all the devices and
+             download data from all of them
+        start_time (None | str | dt.datetime, optional): Start time. Defaults
+            to None. If `None`, it will assume today.
+        end_time (None | str | dt.datetime, optional): End time. Defaults to
+            `None`. Same comment as `start_time`.
 
     Returns:
-        pd.DataFrame | None: A pandas DataFrame with the data for all the requrested
-            devices, or `None` if there's no data available.
+        pd.DataFrame | None: A pandas DataFrame with the data for all the
+            requrested devices, or `None` if there's no data available.
     """
     if not start_time:
         start_time = dt.datetime.now()
@@ -196,9 +191,7 @@ def gather_data(
     """
     logger.info("Starting data gathering...")
     if start_time is None:
-        start_time = dt.datetime.now() - dt.timedelta(
-            days=1
-        )  # yesterday
+        start_time = dt.datetime.now() - dt.timedelta(days=1)  # yesterday
         logger.info(
             "Not given a date, so using yesterday "
             + start_time.strftime("%Y-%m-%d")
@@ -231,8 +224,7 @@ def downloader(
     df = get_data(schema=f"data/{schema}", start_time=start_time)
     if df is not None:
         loc = (
-            output_folder
-            / f"{start_time.strftime('%Y-%m-%d')}_{schema}.csv"
+            output_folder / f"{start_time.strftime('%Y-%m-%d')}_{schema}.csv"
         )
         df.to_csv(loc)
         logger.info(f"Saved {schema} -> {loc}")

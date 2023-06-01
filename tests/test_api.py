@@ -9,8 +9,9 @@ from src.arable_api import get_response
 
 
 def test_get_response_without_api_key():
-    # Test the case where no API key is provided and not defined in the environment
-    # Remova environment variables, as seen in
+    # Test the case where no API key is provided and not defined in the
+    # environment
+    # Remove environment variables, as seen in
     # https://adamj.eu/tech/2020/10/13/how-to-mock-environment-variables-with-pytest/
     names_to_remove = {"ARABLE_API"}
     modified_environ = {
