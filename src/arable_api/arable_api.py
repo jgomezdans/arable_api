@@ -1,3 +1,4 @@
+import concurrent.futures
 import logging
 import requests
 import json
@@ -184,7 +185,7 @@ def gather_data(
     in `output_folder`.
 
     Args:
-        output_folder (str | Path): Location where CSV files will be 
+        output_folder (str | Path): Location where CSV files will be
             saved.
         start_time (None | dt.datetime | str, optional): Date on which
         to download data. Defaults to None, which means download all
@@ -209,15 +210,31 @@ def gather_data(
         logger.info(f"Given date {start_time.strftime('%Y-%m-%d')}")
     output_folder = Path(output_folder)
     output_folder.mkdir(parents=True, exist_ok=True)
-    files = []
-    for schema in ALL_FIELDS:
-        df = get_data(schema=f"data/{schema}", start_time=start_time)
-        if df is not None:
-            loc = (
-                output_folder
-                / f"{start_time.strftime('%Y-%m-%d')}_{schema}.csv"
+    # Download & save to CSV using different threads
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for schema in ALL_FIELDS:
+            future = executor.submit(
+                downloader, output_folder, start_time, schema
             )
-            df.to_csv(loc)
-            logger.info(f"Saved {schema} -> {loc}")
-            files.append(loc)
+            futures.append(future)
+
+        # Wait for all threads to complete
+        for future in concurrent.futures.as_completed(futures):
+            files = future.result()
     return files
+
+
+def downloader(
+    output_folder: Path, start_time: dt.datetime, schema: str
+) -> Path:
+    df = get_data(schema=f"data/{schema}", start_time=start_time)
+    if df is not None:
+        loc = (
+            output_folder
+            / f"{start_time.strftime('%Y-%m-%d')}_{schema}.csv"
+        )
+        df.to_csv(loc)
+        logger.info(f"Saved {schema} -> {loc}")
+    logger.info(f"Didn't download {schema}")
+    return loc
