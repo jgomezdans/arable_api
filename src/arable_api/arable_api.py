@@ -236,5 +236,6 @@ def downloader(
         )
         df.to_csv(loc)
         logger.info(f"Saved {schema} -> {loc}")
-    logger.info(f"Didn't download {schema}")
+    else:
+        logger.info(f"{schema} may not be available?")
     return loc
