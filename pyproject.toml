@@ -3,7 +3,7 @@ line-length =72
 
 [project]
 name = "arable_api"
-version = "0.1.0"
+version = "0.2.0"
 description = "Arable API"
 authors = [
     {name = "Jose Gomez-Dans", email = "jose.gomez-dans@kcl.ac.uk"},
@@ -12,6 +12,7 @@ authors = [
 scripts = {get_arable = "arable_api.__main__:main"}
 dependencies = ["requests",
                 "numpy",
+                "click"
                 "pandas"]
 requires-python = ">=3.8"
 readme = "README.md"
