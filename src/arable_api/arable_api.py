@@ -227,7 +227,7 @@ def gather_data(
 
 def downloader(
     output_folder: Path, start_time: dt.datetime, schema: str
-) -> Path:
+) -> Path | None:
     df = get_data(schema=f"data/{schema}", start_time=start_time)
     if df is not None:
         loc = (
@@ -236,6 +236,7 @@ def downloader(
         )
         df.to_csv(loc)
         logger.info(f"Saved {schema} -> {loc}")
+        return loc
     else:
         logger.info(f"{schema} may not be available?")
-    return loc
+    return None
