@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 import requests
 from unittest.mock import patch
