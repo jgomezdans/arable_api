@@ -12,7 +12,7 @@ authors = [
 scripts = {get_arable = "arable_api.__main__:main"}
 dependencies = ["requests",
                 "numpy",
-                "click"
+                "click",
                 "pandas"]
 requires-python = ">=3.8"
 readme = "README.md"
