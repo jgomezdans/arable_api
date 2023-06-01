@@ -204,6 +204,9 @@ def gather_data(
         )
     elif isinstance(start_time, str):
         start_time = dt.datetime.strptime(start_time, "%Y-%m-%d")
+        logger.info(f"Given date {start_time.strftime('%Y-%m-%d')}")
+    else:
+        logger.info(f"Given date {start_time.strftime('%Y-%m-%d')}")
     output_folder = Path(output_folder)
     output_folder.mkdir(parents=True, exist_ok=True)
     files = []
